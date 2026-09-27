@@ -58,6 +58,7 @@ const pageTitles = {
 	assets: "My Assets",
 	requests: "Service Requests",
 	notifications: "Notifications",
+	help: "Help & FAQ",
 	profile: "My Profile"
 };
 
@@ -365,6 +366,15 @@ document.getElementById("assets-table-body").addEventListener("click", (event) =
 navLinks.forEach((link) => link.addEventListener("click", () => showView(link.dataset.view)));
 document.querySelectorAll("[data-go-view]").forEach((button) => button.addEventListener("click", () => showView(button.dataset.goView)));
 document.querySelectorAll("[data-open-request]").forEach((button) => button.addEventListener("click", openRequestDialog));
+document.getElementById("faq-list").addEventListener("click", (event) => {
+	const question = event.target.closest(".faq-question");
+	if (!question) return;
+
+	const isExpanded = question.getAttribute("aria-expanded") === "true";
+	question.setAttribute("aria-expanded", String(!isExpanded));
+	document.getElementById(question.getAttribute("aria-controls")).hidden = isExpanded;
+	question.querySelector(".faq-toggle-mark").textContent = isExpanded ? "+" : "−";
+});
 
 document.getElementById("close-dialog").addEventListener("click", () => requestDialog.close());
 document.getElementById("cancel-request").addEventListener("click", () => requestDialog.close());

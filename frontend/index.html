@@ -4,12 +4,44 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#173d35">
-	<title>My Dashboard | Northfield College IT</title>
+	<title>User Login | Northfield College IT</title>
 	<link rel="stylesheet" href="style.css">
 	<script src="script.js" defer></script>
 </head>
 <body>
-	<div class="app-shell">
+	<main class="login-screen" id="login-screen" aria-labelledby="login-title">
+		<div class="login-layout">
+			<div class="login-intro-panel">
+				<a class="brand login-brand" href="#login" aria-label="Northfield College IT">
+					<span class="brand-mark" aria-hidden="true">N<span>.</span></span>
+					<span class="brand-copy"><strong>Northfield</strong><small>COLLEGE IT</small></span>
+				</a>
+				<div class="login-intro-copy">
+					<p class="login-eyebrow">CAMPUS TECHNOLOGY SERVICES</p>
+					<h1 id="login-title">College IT Asset Management System</h1>
+					<p>Access your assigned equipment, track support requests, and stay up to date with IT services.</p>
+				</div>
+				<div class="login-campus-note"><span aria-hidden="true">N</span><p>Northfield College<br><strong>Information Technology</strong></p></div>
+			</div>
+			<div class="login-form-panel">
+				<div class="login-form-heading"><p class="eyebrow">ACCOUNT ACCESS</p><h2>User Login</h2><p>Sign in with your college account to continue.</p></div>
+				<form id="login-form" class="login-form" novalidate>
+					<label for="login-identity">User ID or Email</label>
+					<input id="login-identity" name="identity" type="text" autocomplete="username" placeholder="Enter your user ID or email" required>
+					<label for="login-password">Password</label>
+					<div class="password-field"><input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button id="toggle-password" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button></div>
+					<div class="login-options"><label class="remember-option" for="remember-me"><input id="remember-me" type="checkbox"><span>Remember Me</span></label><a class="forgot-link" id="forgot-password" href="#forgot-password">Forgot Password?</a></div>
+					<p class="login-feedback login-error" id="login-error" role="alert" hidden></p>
+					<p class="login-feedback login-notice" id="login-notice" role="status" hidden></p>
+					<button class="button button-primary login-submit" type="submit">Login <span aria-hidden="true">→</span></button>
+				</form>
+				<p class="login-demo"><strong>Demo access</strong><span>User ID <b>USER-001</b></span><span>Password <b>student123</b></span></p>
+				<p class="login-support">Need help signing in? Contact the college IT service desk.</p>
+			</div>
+		</div>
+	</main>
+
+	<div class="app-shell" id="dashboard-shell" hidden>
 		<aside class="sidebar" id="sidebar" aria-label="Main navigation">
 			<a class="brand" href="#dashboard" aria-label="Northfield College IT home">
 				<span class="brand-mark" aria-hidden="true">N<span>.</span></span>
@@ -24,15 +56,15 @@
 				</button>
 				<button class="nav-link" type="button" data-view="assets">
 					<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4M7 8h10m-10 4h6"/></svg>
-					<span>My Assets</span><span class="nav-count">4</span>
+					<span>My Assets</span><span class="nav-count" id="asset-nav-count">0</span>
 				</button>
 				<button class="nav-link" type="button" data-view="requests">
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l4 4v14H3V3h4Zm9 0v5h5M7 12h10M7 16h7"/></svg>
-					<span>Service Requests</span><span class="nav-count" id="request-nav-count">2</span>
+					<span>Service Requests</span><span class="nav-count" id="request-nav-count">0</span>
 				</button>
 				<button class="nav-link" type="button" data-view="notifications">
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Zm-8 13h4"/></svg>
-					<span>Notifications</span><span class="nav-count" id="notification-nav-count">3</span>
+					<span>Notifications</span><span class="nav-count" id="notification-nav-count">0</span>
 				</button>
 				<button class="nav-link" type="button" data-view="profile">
 					<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
@@ -53,7 +85,7 @@
 
 		<main class="main-area">
 			<header class="topbar">
-				<button class="menu-toggle icon-button" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+				<button class="menu-toggle icon-button" id="menu-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
 				</button>
 				<div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-divider">/</span><strong id="page-heading">Dashboard</strong></div>
@@ -71,15 +103,15 @@
 					</div>
 
 					<div class="summary-grid" aria-label="Account summary">
-						<article class="summary-card"><div class="summary-card-top"><span>Assigned assets</span><span class="summary-icon icon-green" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></span></div><strong class="summary-number" id="assigned-count">4</strong><span class="summary-caption">Across 3 categories</span></article>
-						<article class="summary-card"><div class="summary-card-top"><span>Active requests</span><span class="summary-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><strong class="summary-number" id="active-count">2</strong><span class="summary-caption">Being handled by IT</span></article>
-						<article class="summary-card"><div class="summary-card-top"><span>Completed requests</span><span class="summary-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg></span></div><strong class="summary-number">8</strong><span class="summary-caption">Resolved this semester</span></article>
-						<article class="summary-card"><div class="summary-card-top"><span>Notifications</span><span class="summary-icon icon-rose" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Zm-8 13h4"/></svg></span></div><strong class="summary-number" id="notification-count">3</strong><span class="summary-caption" id="notification-caption">Unread notifications</span></article>
+						<article class="summary-card"><div class="summary-card-top"><span>Assigned assets</span><span class="summary-icon icon-green" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></span></div><strong class="summary-number" id="assigned-count">0</strong><span class="summary-caption">Across 3 categories</span></article>
+						<article class="summary-card"><div class="summary-card-top"><span>Active requests</span><span class="summary-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><strong class="summary-number" id="active-count">0</strong><span class="summary-caption">Being handled by IT</span></article>
+						<article class="summary-card"><div class="summary-card-top"><span>Completed requests</span><span class="summary-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg></span></div><strong class="summary-number" id="completed-count">0</strong><span class="summary-caption">Resolved this semester</span></article>
+						<article class="summary-card"><div class="summary-card-top"><span>Notifications</span><span class="summary-icon icon-rose" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Zm-8 13h4"/></svg></span></div><strong class="summary-number" id="notification-count">0</strong><span class="summary-caption" id="notification-caption">Unread notifications</span></article>
 					</div>
 
 					<section class="content-panel recent-panel" aria-labelledby="recent-heading">
 						<div class="panel-heading"><div><h2 id="recent-heading">Recently assigned assets</h2><p>Your latest equipment assignments</p></div><button class="text-link" type="button" data-go-view="assets">View all assets <span aria-hidden="true">→</span></button></div>
-						<div class="table-wrap"><table><thead><tr><th>Asset</th><th>Category</th><th>Assigned date</th><th>Status</th></tr></thead><tbody id="recent-assets-body"></tbody></table></div>
+						<div class="table-wrap"><table><thead><tr><th scope="col">Asset</th><th scope="col">Category</th><th scope="col">Assigned date</th><th scope="col">Status</th></tr></thead><tbody id="recent-assets-body"></tbody></table></div>
 					</section>
 
 					<div class="dashboard-lower">
@@ -103,14 +135,14 @@
 							<label class="asset-search" for="asset-search"><span>Search assets</span><input id="asset-search" type="search" placeholder="Search by Asset ID or Asset Name" autocomplete="off"></label>
 							<label class="asset-category-filter" for="asset-category-filter"><span>Category</span><select id="asset-category-filter"><option>All Categories</option><option>Laptop</option><option>Monitor</option><option>Accessory</option></select></label>
 						</div>
-						<div class="table-wrap"><table><thead><tr><th>Asset ID</th><th>Asset Name</th><th>Category</th><th>Assigned Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="assets-table-body"></tbody></table></div>
+						<div class="table-wrap"><table><thead><tr><th scope="col">Asset ID</th><th scope="col">Asset Name</th><th scope="col">Category</th><th scope="col">Assigned Date</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead><tbody id="assets-table-body"></tbody></table></div>
 					</section>
 					<div class="asset-note"><span class="note-check" aria-hidden="true">✓</span><p><strong>Taking care of your equipment</strong><br>Report damage or technical issues by creating a service request. For equipment returns, contact the IT service desk.</p><button class="text-link" type="button" data-open-request>Report an issue <span aria-hidden="true">→</span></button></div>
 				</section>
 
 				<section class="view-section" id="view-requests" aria-labelledby="requests-heading" hidden>
 					<div class="section-intro"><div><p class="eyebrow">IT SUPPORT</p><h1 id="requests-heading">Service Requests</h1><p class="welcome-subtitle">Track your support requests and their latest status.</p></div><button class="button button-primary" type="button" data-open-request><span class="button-plus" aria-hidden="true">+</span> New Request</button></div>
-					<section class="content-panel" aria-labelledby="requests-table-heading"><div class="panel-heading"><div><h2 id="requests-table-heading">Your requests</h2><p>Support history for your account</p></div><span class="table-note" id="request-total">2 requests</span></div><div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Asset</th><th>Issue</th><th>Priority</th><th>Date submitted</th><th>Status</th></tr></thead><tbody id="requests-table-body"></tbody></table></div></section>
+					<section class="content-panel" aria-labelledby="requests-table-heading"><div class="panel-heading"><div><h2 id="requests-table-heading">Your requests</h2><p>Support history for your account</p></div><span class="table-note" id="request-total">2 requests</span></div><div class="table-wrap"><table><thead><tr><th scope="col">Request ID</th><th scope="col">Asset</th><th scope="col">Issue</th><th scope="col">Priority</th><th scope="col">Date submitted</th><th scope="col">Status</th></tr></thead><tbody id="requests-table-body"></tbody></table></div></section>
 				</section>
 
 				<section class="view-section" id="view-notifications" aria-labelledby="notifications-heading" hidden>

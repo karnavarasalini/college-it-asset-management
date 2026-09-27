@@ -1,29 +1,57 @@
-const assets = [
-	{ id: "IT-001", name: "Dell Laptop", category: "Laptop", brand: "Dell", model: "Latitude 5440", serial: "DL-5440-8K2P19", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" },
-	{ id: "IT-014", name: "Wireless Mouse", category: "Accessory", brand: "Logitech", model: "M185 Wireless Mouse", serial: "LGT-M185-7N4Q21", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" },
-	{ id: "IT-021", name: "HP Monitor", category: "Monitor", brand: "HP", model: "E24 G5", serial: "HP-E24G5-CN4128", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" }
-];
-
-const requests = [
-	{ id: "SR-2025-041", asset: "Dell Latitude 7440", issue: "Laptop runs slowly", date: "Oct 20, 2025", priority: "Medium", status: "In progress" },
-	{ id: "SR-2025-036", asset: "Dell UltraSharp 27 Monitor", issue: "Display flickers occasionally", date: "Oct 16, 2025", priority: "Low", status: "Pending" }
-];
-
-const notifications = [
-	{ id: "notification-001", title: "Asset Assigned", message: "Dell Laptop (IT-001) has been assigned to your account.", type: "Asset", dateTime: "Sep 03, 2025 · 10:15 AM", isRead: false },
-	{ id: "notification-002", title: "Service Request Submitted", message: "Your request REQ-003 has been submitted and is waiting for IT review.", type: "Service Request", dateTime: "Sep 02, 2025 · 2:40 PM", isRead: false },
-	{ id: "notification-003", title: "Service Request Completed", message: "Your account access request has been resolved by the IT support team.", type: "Service Request", dateTime: "Aug 28, 2025 · 11:05 AM", isRead: true },
-	{ id: "notification-004", title: "Maintenance Reminder", message: "Please bring your assigned laptop to the service desk for its scheduled checkup.", type: "Maintenance", dateTime: "Aug 25, 2025 · 9:00 AM", isRead: false }
-];
-
-const profile = {
-	fullName: "Jordan Lee",
-	userId: "FAC-20847",
-	email: "jordan.lee@northfield.edu",
-	department: "School of Computing",
-	role: "Faculty member",
-	phoneNumber: "+1 (555) 014-2084"
+const sampleData = {
+	demoCredentials: {
+		userId: "USER-001",
+		password: "student123"
+	},
+	user: {
+		fullName: "Jordan Lee",
+		userId: "FAC-20847",
+		email: "jordan.lee@northfield.edu",
+		department: "School of Computing",
+		role: "Faculty member",
+		phoneNumber: "+1 (555) 014-2084"
+	},
+	assets: [
+		{ id: "IT-001", name: "Dell Laptop", category: "Laptop", brand: "Dell", model: "Latitude 5440", serial: "DL-5440-8K2P19", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" },
+		{ id: "IT-014", name: "Wireless Mouse", category: "Accessory", brand: "Logitech", model: "M185 Wireless Mouse", serial: "LGT-M185-7N4Q21", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" },
+		{ id: "IT-021", name: "HP Monitor", category: "Monitor", brand: "HP", model: "E24 G5", serial: "HP-E24G5-CN4128", date: "Sep 03, 2025", status: "In use", assignedTo: "Jordan Lee", location: "Innovation Hall, Room 314" }
+	],
+	serviceRequests: [
+		{ id: "SR-2025-041", asset: "Dell Latitude 7440", issue: "Laptop runs slowly", date: "Oct 20, 2025", priority: "Medium", status: "In progress" },
+		{ id: "SR-2025-036", asset: "Dell UltraSharp 27 Monitor", issue: "Display flickers occasionally", date: "Oct 16, 2025", priority: "Low", status: "Pending" }
+	],
+	notifications: [
+		{ id: "notification-001", title: "Asset Assigned", message: "Dell Laptop (IT-001) has been assigned to your account.", type: "Asset", dateTime: "Sep 03, 2025 · 10:15 AM", isRead: false },
+		{ id: "notification-002", title: "Service Request Submitted", message: "Your request REQ-003 has been submitted and is waiting for IT review.", type: "Service Request", dateTime: "Sep 02, 2025 · 2:40 PM", isRead: false },
+		{ id: "notification-003", title: "Service Request Completed", message: "Your account access request has been resolved by the IT support team.", type: "Service Request", dateTime: "Aug 28, 2025 · 11:05 AM", isRead: true },
+		{ id: "notification-004", title: "Maintenance Reminder", message: "Please bring your assigned laptop to the service desk for its scheduled checkup.", type: "Maintenance", dateTime: "Aug 25, 2025 · 9:00 AM", isRead: false }
+	]
 };
+
+function loadUserData() {
+	// TODO: Replace this sample source with the agreed user-profile API call.
+	return { ...sampleData.user };
+}
+
+function loadAssets() {
+	// TODO: Replace this sample source with the agreed assets API call.
+	return sampleData.assets.map((asset) => ({ ...asset }));
+}
+
+function loadServiceRequests() {
+	// TODO: Replace this sample source with the agreed service-requests API call.
+	return sampleData.serviceRequests.map((request) => ({ ...request }));
+}
+
+function loadNotifications() {
+	// TODO: Replace this sample source with the agreed notifications API call.
+	return sampleData.notifications.map((notification) => ({ ...notification }));
+}
+
+const profile = loadUserData();
+let assets = loadAssets();
+let requests = loadServiceRequests();
+let notifications = loadNotifications();
 
 const pageTitles = {
 	dashboard: "Dashboard",
@@ -39,7 +67,33 @@ const requestDialog = document.getElementById("request-dialog");
 const requestForm = document.getElementById("request-form");
 const formError = document.getElementById("form-error");
 const toast = document.getElementById("toast");
+const loginScreen = document.getElementById("login-screen");
+const dashboardShell = document.getElementById("dashboard-shell");
+const loginForm = document.getElementById("login-form");
+const loginIdentityField = document.getElementById("login-identity");
+const loginPasswordField = document.getElementById("login-password");
+const rememberMeCheckbox = document.getElementById("remember-me");
+const loginError = document.getElementById("login-error");
+const loginNotice = document.getElementById("login-notice");
+const rememberedIdentityKey = "college-it-remembered-user";
 let toastTimer;
+
+function readRememberedIdentity() {
+	try {
+		return localStorage.getItem(rememberedIdentityKey) || "";
+	} catch {
+		return "";
+	}
+}
+
+function saveRememberedIdentity(identity) {
+	try {
+		if (identity) localStorage.setItem(rememberedIdentityKey, identity);
+		else localStorage.removeItem(rememberedIdentityKey);
+	} catch {
+		// Storage may be unavailable when opening a local file directly.
+	}
+}
 
 function escapeHtml(value) {
 	const characters = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" };
@@ -55,6 +109,58 @@ function statusClass(status) {
 
 function nextRequestId() {
 	return `REQ-${String(requests.length + 1).padStart(3, "0")}`;
+}
+
+function submitServiceRequest(requestData) {
+	const asset = assets.find((item) => item.id === requestData.assetId);
+	if (!asset) return null;
+
+	// TODO: Replace this sample-state update with the agreed service-request submission API call.
+	const request = {
+		id: requestData.requestId,
+		asset: `${asset.id} - ${asset.name}`,
+		issue: `${requestData.issueType}: ${requestData.description}`,
+		date: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date()),
+		priority: requestData.priority,
+		status: "Pending"
+	};
+	requests.unshift(request);
+	renderRequests();
+	return request;
+}
+
+function updateAssetCount() {
+	const assetCount = assets.length;
+	document.getElementById("assigned-count").textContent = assetCount;
+	document.getElementById("asset-total").textContent = assetCount;
+	document.getElementById("asset-nav-count").textContent = assetCount;
+}
+
+function updateRequestCounts() {
+	const terminalStatuses = new Set(["completed", "cancelled", "canceled", "closed", "rejected", "resolved"]);
+	const activeCount = requests.filter((request) => !terminalStatuses.has(String(request.status).toLowerCase())).length;
+	const completedCount = requests.filter((request) => String(request.status).toLowerCase() === "completed").length;
+	document.getElementById("active-count").textContent = activeCount;
+	document.getElementById("completed-count").textContent = completedCount;
+	document.getElementById("request-nav-count").textContent = activeCount;
+	document.getElementById("request-total").textContent = `${requests.length} requests`;
+}
+
+function updateNotificationCount() {
+	const unreadCount = notifications.filter((notification) => !notification.isRead).length;
+	const navCount = document.getElementById("notification-nav-count");
+	document.getElementById("notification-count").textContent = unreadCount;
+	document.getElementById("notification-caption").textContent = unreadCount === 1 ? "Unread notification" : "Unread notifications";
+	navCount.textContent = unreadCount;
+	navCount.hidden = unreadCount === 0;
+	document.getElementById("notification-empty").hidden = unreadCount > 0;
+	document.getElementById("mark-all-notifications").disabled = unreadCount === 0;
+}
+
+function updateDashboardStats() {
+	updateAssetCount();
+	updateRequestCounts();
+	updateNotificationCount();
 }
 
 function renderAssets() {
@@ -76,40 +182,32 @@ function renderAssets() {
 		</tr>`).join("");
 	const emptyRow = '<tr><td class="empty-state" colspan="6">No assets found.</td></tr>';
 
-	document.getElementById("recent-assets-body").innerHTML = assets.slice(0, 3).map((asset) => `
+	const recentRows = assets.slice(0, 3).map((asset) => `
 		<tr>
 			<td><div class="asset-name-cell"><strong>${escapeHtml(asset.name)}</strong><span class="asset-id">${escapeHtml(asset.id)}</span></div></td>
 			<td>${escapeHtml(asset.category)}</td><td>${escapeHtml(asset.date)}</td>
 			<td><span class="status-badge status-active">${escapeHtml(asset.status)}</span></td>
 		</tr>`).join("");
+	document.getElementById("recent-assets-body").innerHTML = recentRows || '<tr><td class="empty-state" colspan="4">No assets assigned yet.</td></tr>';
 	document.getElementById("assets-table-body").innerHTML = rows || emptyRow;
-	document.getElementById("assigned-count").textContent = assets.length;
-	document.getElementById("asset-total").textContent = assets.length;
+	updateAssetCount();
 	document.getElementById("request-asset").innerHTML = '<option value="">Choose an asset</option>' + assets.map((asset) => `<option value="${escapeHtml(asset.id)}">${escapeHtml(asset.id)} - ${escapeHtml(asset.name)}</option>`).join("");
 }
 
 function renderRequests() {
-	document.getElementById("requests-table-body").innerHTML = requests.map((request) => `
+	const requestRows = requests.map((request) => `
 		<tr><td class="asset-id">${escapeHtml(request.id)}</td><td>${escapeHtml(request.asset)}</td><td>${escapeHtml(request.issue)}</td><td><span class="priority-badge priority-${escapeHtml((request.priority || "Medium").toLowerCase())}">${escapeHtml(request.priority || "Medium")}</span></td><td>${escapeHtml(request.date)}</td>
 			<td><span class="status-badge ${statusClass(request.status)}">${escapeHtml(request.status)}</span></td></tr>`).join("");
-	document.getElementById("request-preview-list").innerHTML = requests.slice(0, 3).map((request) => `
+	document.getElementById("requests-table-body").innerHTML = requestRows || '<tr><td class="empty-state" colspan="6">No service requests yet.</td></tr>';
+	const requestPreviews = requests.slice(0, 3).map((request) => `
 		<div class="request-preview"><div class="request-preview-copy"><strong>${escapeHtml(request.issue)}</strong><span>${escapeHtml(request.id)} · ${escapeHtml(request.date)}</span></div><span class="status-badge ${statusClass(request.status)}">${escapeHtml(request.status)}</span></div>`).join("");
-	const activeCount = requests.filter((request) => request.status !== "Completed").length;
-	document.getElementById("active-count").textContent = activeCount;
-	document.getElementById("request-nav-count").textContent = activeCount;
-	document.getElementById("request-total").textContent = `${requests.length} requests`;
+	document.getElementById("request-preview-list").innerHTML = requestPreviews || '<p class="empty-state-message">No service requests yet.</p>';
+	updateRequestCounts();
 }
 
 function renderNotifications() {
 	const notificationList = document.getElementById("notification-list");
-	const unreadCount = notifications.filter((notification) => !notification.isRead).length;
-	const navCount = document.getElementById("notification-nav-count");
-	document.getElementById("notification-count").textContent = unreadCount;
-	document.getElementById("notification-caption").textContent = unreadCount === 1 ? "Unread notification" : "Unread notifications";
-	navCount.textContent = unreadCount;
-	navCount.hidden = unreadCount === 0;
-	document.getElementById("notification-empty").hidden = unreadCount > 0;
-	document.getElementById("mark-all-notifications").disabled = unreadCount === 0;
+	updateNotificationCount();
 
 	const symbols = { Asset: "↗", "Service Request": "✓", Maintenance: "i" };
 	notificationList.innerHTML = notifications.map((notification) => {
@@ -158,6 +256,12 @@ function populateProfileForm() {
 	document.getElementById("profile-department-edit").value = profile.department;
 }
 
+function updateUserProfile(profileUpdates) {
+	// TODO: Replace this in-memory update with the agreed user-profile API call.
+	Object.assign(profile, profileUpdates);
+	renderProfile();
+}
+
 function setProfileEditing(isEditing) {
 	document.getElementById("profile-display").hidden = isEditing;
 	document.getElementById("profile-form").hidden = !isEditing;
@@ -165,6 +269,7 @@ function setProfileEditing(isEditing) {
 }
 
 function showView(viewName) {
+	if (viewName === "dashboard") updateDashboardStats();
 	document.querySelectorAll(".view-section").forEach((section) => {
 		const isSelected = section.id === `view-${viewName}`;
 		section.hidden = !isSelected;
@@ -200,11 +305,31 @@ const menuToggle = document.getElementById("menu-toggle");
 const sidebarBackdrop = document.getElementById("sidebar-backdrop");
 
 function closeSidebar() {
+	const wasOpen = sidebar.classList.contains("is-open");
 	sidebar.classList.remove("is-open");
 	sidebarBackdrop.classList.remove("is-visible");
 	menuToggle.setAttribute("aria-expanded", "false");
 	menuToggle.setAttribute("aria-label", "Open navigation");
+	const isMobile = window.matchMedia("(max-width: 760px)").matches;
+	sidebar.inert = isMobile;
+	if (wasOpen && isMobile) menuToggle.focus();
 }
+
+function syncSidebarAccessibility() {
+	const isMobile = window.matchMedia("(max-width: 760px)").matches;
+	if (!isMobile && sidebar.classList.contains("is-open")) {
+		closeSidebar();
+		return;
+	}
+	sidebar.inert = isMobile && !sidebar.classList.contains("is-open");
+}
+
+syncSidebarAccessibility();
+window.addEventListener("resize", syncSidebarAccessibility);
+
+const rememberedIdentity = readRememberedIdentity();
+loginIdentityField.value = rememberedIdentity;
+rememberMeCheckbox.checked = Boolean(rememberedIdentity);
 
 renderAssets();
 renderRequests();
@@ -267,17 +392,20 @@ requestForm.addEventListener("submit", (event) => {
 		return;
 	}
 
-	const asset = assets.find((item) => item.id === assetId);
 	const requestId = document.getElementById("request-id").value;
-	requests.unshift({
-		id: requestId,
-		asset: `${asset.id} - ${asset.name}`,
-		issue: `${issueType}: ${description}`,
-		date: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date()),
-		priority,
-		status: "Pending"
+	const request = submitServiceRequest({
+		requestId,
+		assetId,
+		issueType,
+		description,
+		priority
 	});
-	renderRequests();
+	if (!request) {
+		formError.textContent = "Choose one of your assigned assets and complete all required fields.";
+		formError.hidden = false;
+		return;
+	}
+
 	requestDialog.close();
 	showView("requests");
 	showToast("Service request submitted successfully.");
@@ -288,8 +416,13 @@ menuToggle.addEventListener("click", () => {
 	sidebarBackdrop.classList.toggle("is-visible", isOpen);
 	menuToggle.setAttribute("aria-expanded", String(isOpen));
 	menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+	sidebar.inert = window.matchMedia("(max-width: 760px)").matches && !isOpen;
+	if (isOpen) navLinks[0].focus();
 });
 sidebarBackdrop.addEventListener("click", closeSidebar);
+document.addEventListener("keydown", (event) => {
+	if (event.key === "Escape" && sidebar.classList.contains("is-open")) closeSidebar();
+});
 
 document.getElementById("notification-list").addEventListener("click", (event) => {
 	const button = event.target.closest("[data-mark-read]");
@@ -329,11 +462,7 @@ profileForm.addEventListener("submit", (event) => {
 		return;
 	}
 
-	profile.fullName = fullName;
-	profile.email = email;
-	profile.phoneNumber = phoneNumber;
-	profile.department = department;
-	renderProfile();
+	updateUserProfile({ fullName, email, phoneNumber, department });
 	profileError.hidden = true;
 	setProfileEditing(false);
 	showToast("Profile updated successfully.");
@@ -341,5 +470,59 @@ profileForm.addEventListener("submit", (event) => {
 
 document.getElementById("logout-button").addEventListener("click", () => {
 	const shouldLogout = window.confirm("Are you sure you want to log out?");
-	if (shouldLogout) showToast("You have been logged out. Connect authentication to finish this action.");
+	if (!shouldLogout) return;
+	dashboardShell.hidden = true;
+	loginScreen.hidden = false;
+	loginPasswordField.value = "";
+	loginError.hidden = true;
+	loginNotice.hidden = true;
+	loginIdentityField.value = rememberMeCheckbox.checked ? readRememberedIdentity() : "";
+	showToast("You have been logged out.");
+	document.title = "User Login | Northfield College IT";
+});
+
+loginForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+	loginError.hidden = true;
+	loginNotice.hidden = true;
+
+	const identity = loginIdentityField.value.trim();
+	const password = loginPasswordField.value;
+	if (!identity || !password) {
+		loginError.textContent = "Enter your User ID or password.";
+		loginError.hidden = false;
+		return;
+	}
+
+	const normalizedIdentity = identity.toLowerCase();
+	const validIdentity = normalizedIdentity === sampleData.demoCredentials.userId.toLowerCase() || normalizedIdentity === profile.email.toLowerCase();
+	if (!validIdentity || password !== sampleData.demoCredentials.password) {
+		loginError.textContent = "Invalid User ID or password.";
+		loginError.hidden = false;
+		return;
+	}
+
+	saveRememberedIdentity(rememberMeCheckbox.checked ? identity : "");
+	loginScreen.hidden = true;
+	dashboardShell.hidden = false;
+	loginPasswordField.value = "";
+	showView("dashboard");
+	document.title = "My Dashboard | Northfield College IT";
+	showToast("Login successful. Welcome back!");
+});
+
+document.getElementById("toggle-password").addEventListener("click", (event) => {
+	const button = event.currentTarget;
+	const shouldShow = loginPasswordField.type === "password";
+	loginPasswordField.type = shouldShow ? "text" : "password";
+	button.textContent = shouldShow ? "Hide" : "Show";
+	button.setAttribute("aria-label", shouldShow ? "Hide password" : "Show password");
+	button.setAttribute("aria-pressed", String(shouldShow));
+});
+
+document.getElementById("forgot-password").addEventListener("click", (event) => {
+	event.preventDefault();
+	loginError.hidden = true;
+	loginNotice.textContent = "Password recovery is a demonstration only. Contact the college IT service desk for help.";
+	loginNotice.hidden = false;
 });

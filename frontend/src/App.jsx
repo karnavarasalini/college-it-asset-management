@@ -5,6 +5,7 @@ import Requests from "./pages/Requests.jsx";
 import MyAssets from "./pages/MyAssets.jsx";
 import Repairs from "./pages/Repairs.jsx";
 import Users from "./pages/Users.jsx";
+import Reservations from "./pages/Reservations.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 	if (activePage === "requests") pageContent = <Requests />;
 	if (activePage === "repairs") pageContent = <Repairs />;
 	if (activePage === "profile") pageContent = <Users onLogout={handleLogout} />;
+	if (activePage === "reservations") pageContent = <Reservations />;
 
 	return (
 		<Dashboard

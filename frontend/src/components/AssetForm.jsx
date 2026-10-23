@@ -21,7 +21,12 @@ function AssetForm({ initialData, onSubmit, onCancel, submitting = false }) {
     ...(initialData || {}),
     asset_code: initialData?.asset_code || "",
     asset_name: initialData?.asset_name || initialData?.assetName || "",
-    asset_type: initialData?.asset_type || initialData?.assetType || "LAPTOP",
+    asset_type:
+      initialData?.asset_type || initialData?.assetType || "LAPTOP",
+    brand:
+      initialData?.brand ?? initialData?.asset_brand ?? "",
+    model:
+      initialData?.model ?? initialData?.asset_model ?? "",
     department_id: initialData?.department_id ?? "",
     location_id: initialData?.location_id ?? "",
     purchase_date: initialData?.purchase_date
@@ -49,6 +54,8 @@ function AssetForm({ initialData, onSubmit, onCancel, submitting = false }) {
 
     onSubmit?.({
       ...formData,
+      brand: formData.brand.trim(),
+      model: formData.model.trim(),
       department_id: formData.department_id
         ? Number(formData.department_id)
         : null,
@@ -102,7 +109,7 @@ function AssetForm({ initialData, onSubmit, onCancel, submitting = false }) {
         Brand
         <input
           name="brand"
-          value={formData.brand || ""}
+          value={formData.brand ?? ""}
           onChange={handleChange}
         />
       </label>
@@ -111,7 +118,7 @@ function AssetForm({ initialData, onSubmit, onCancel, submitting = false }) {
         Model
         <input
           name="model"
-          value={formData.model || ""}
+          value={formData.model ?? ""}
           onChange={handleChange}
         />
       </label>

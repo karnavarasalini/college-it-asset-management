@@ -97,3 +97,17 @@ export function updateUserProfile(profileData) {
 		body: JSON.stringify(profileData),
 	});
 }
+
+export function createAsset(assetData) {
+        return apiRequest("/assets", {
+                method: "POST",
+                body: JSON.stringify(assetData),
+        });
+}
+
+export function updateAsset(assetId, assetData) {
+        return apiRequest(`/assets/${assetId}`, {
+                method: "PUT",
+                body: JSON.stringify(assetData),
+        });
+}

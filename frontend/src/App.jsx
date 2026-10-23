@@ -8,34 +8,37 @@ import Users from "./pages/Users.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 
 function App() {
-	const { currentUser, isAuthenticated, logout } = useAuth();
-	const [activePage, setActivePage] = useState("dashboard");
+  const { currentUser, isAuthenticated, logout } = useAuth();
+  const [activePage, setActivePage] = useState("dashboard");
 
-	function handleLogout() {
-		logout();
-		setActivePage("dashboard");
-	}
+  function handleLogout() {
+    logout();
+    setActivePage("dashboard");
+  }
 
-	if (!isAuthenticated) {
-		return <Login />;
-	}
+  if (!isAuthenticated) {
+    return <Login />;
+  }
 
-	let pageContent = null;
-	if (activePage === "assets") pageContent = <MyAssets />;
-	if (activePage === "requests") pageContent = <Requests />;
-	if (activePage === "repairs") pageContent = <Repairs />;
-	if (activePage === "profile") pageContent = <Users onLogout={handleLogout} />;
+  let pageContent = <Dashboard currentUser={currentUser} />;
 
-	return (
-		<Dashboard
-			activePage={activePage}
-			currentUser={currentUser}
-			onNavigate={setActivePage}
-			onLogout={handleLogout}
-		>
-			{pageContent}
-		</Dashboard>
-	);
+  if (activePage === "assets") pageContent = <MyAssets />;
+  if (activePage === "requests") pageContent = <Requests />;
+  if (activePage === "repairs") pageContent = <Repairs />;
+  if (activePage === "profile") {
+    pageContent = <Users onLogout={handleLogout} />;
+  }
+
+  return (
+    <Dashboard
+      activePage={activePage}
+      currentUser={currentUser}
+      onNavigate={setActivePage}
+      onLogout={handleLogout}
+    >
+      {pageContent}
+    </Dashboard>
+  );
 }
 
 export default App;
